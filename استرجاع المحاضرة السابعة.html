@@ -1,0 +1,825 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>استرجاع المحاضرة السابعة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Cairo:wght@700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: ترويسة كبيرة، بطاقات مراحل داكنة بأرقام برتقالية، لوحة عمل بيضاء، وبطاقة «المهمة» كريمية */
+:root{
+  --bg:#FFFFFF; --surface:#FFFFFF; --surface-2:#E8EFED; --card:#F3F7F6; --ink:#14201F; --muted:#4F5F5D; --line:#D3DEDB;
+  --dark:#1B2827; --dark-2:#0B1514; --dark-line:#2F4442; --on-dark:#F5F2EA; --on-dark-muted:#B8C6C3;
+  --orange:#F0A04B; --accent:#A85500; --accent-soft:#FCEBD3; --on-orange:#14201F; --teal:#6FD0C6; --teal-soft:#D8F1EE; --teal-ink:#0F6B63;
+  --cream:#F6F2E8; --cream-ink:#8A4F00;
+  --ok:#16794C; --ok-soft:#DCF2E7; --warn:#8F5600; --warn-soft:#FAE9C8; --bad:#B3261E; --bad-soft:#F9DCD9;
+  --font-display:'Cairo','IBM Plex Sans Arabic',system-ui,sans-serif;
+  --font-body:'IBM Plex Sans Arabic',system-ui,-apple-system,'Segoe UI',Tahoma,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.75;
+  padding-block:24px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:900px;margin-inline:auto}
+h1,h2,h3{font-family:var(--font-display);font-weight:700;margin:0;text-wrap:balance;line-height:1.3}
+p{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.eyebrow-row{display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap}
+.kicker{display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:600;font-size:14px}
+.kicker::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--orange)}
+.savebadge{font-size:12.5px;color:var(--muted)}
+.top h1{font-weight:800;font-size:clamp(40px,9vw,68px);line-height:1.15;margin:10px 0 8px;letter-spacing:-.01em}
+.top .sub{color:var(--muted);font-size:16px;max-width:62ch}
+.tabs{display:flex;gap:8px;margin:22px 0 16px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:#fff;border-radius:99px;padding:7px 18px;cursor:pointer;color:var(--ink);font-weight:500}
+.tab:hover{border-color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--dark);color:var(--on-dark);border-color:var(--dark)}
+.pill{display:inline-block;min-width:22px;padding:0 7px;margin-inline-start:8px;border-radius:99px;background:var(--orange);color:var(--on-orange);font-size:12px;line-height:20px;text-align:center;font-weight:600}
+
+/* stepper: بطاقات داكنة */
+.steps{list-style:none;margin:0 0 16px;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.steps li{min-width:0}
+.step{width:100%;height:100%;display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:right;background:var(--dark);color:var(--on-dark);border:1px solid var(--dark-line);border-radius:18px;padding:12px 14px 14px;cursor:pointer}
+.step:disabled{cursor:default;opacity:.45}
+.step:hover:not(:disabled){border-color:var(--orange)}
+.sn{font-family:var(--font-display);font-weight:800;font-size:30px;line-height:1.1;color:var(--orange)}
+.st{font-family:var(--font-display);font-weight:700;font-size:16px}
+.sd{font-size:12.5px;line-height:1.6;color:var(--on-dark-muted)}
+.step.is-cur{border-color:var(--orange);box-shadow:inset 0 0 0 1.5px var(--orange)}
+
+/* panel */
+.panel{background:#fff;border:1px solid var(--line);border-radius:20px;padding:24px}
+.p-head{display:flex;flex-wrap:wrap;gap:16px 24px;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.p-head>div:first-child{flex:1 1 260px;min-width:0}
+.eyebrow{font-size:13px;color:var(--accent);font-weight:600}
+.p-head h2{font-weight:800;font-size:30px;margin-top:2px}
+.task{background:var(--cream);border-radius:16px;padding:14px 20px;margin-bottom:20px}
+.task small{display:block;color:var(--cream-ink);font-weight:600;font-size:13px}
+.task p{font-weight:600;font-size:16.5px}
+.callout{margin-top:22px;background:var(--orange);color:var(--on-orange);border-radius:14px;padding:12px 18px;font-weight:600;font-size:14.5px}
+.note{margin-bottom:12px;padding:8px 14px;border-radius:10px;background:var(--warn-soft);color:var(--warn);font-size:14px}
+.ex-flag{display:inline-block;margin-inline-start:8px;padding:0 8px;border-radius:6px;background:var(--warn-soft);color:var(--warn);font-size:12px;font-weight:600;vertical-align:middle}
+
+/* timer: بطاقة داكنة */
+.timer{flex:0 0 210px;display:flex;flex-direction:column;gap:8px;background:var(--dark);color:var(--on-dark);border-radius:18px;padding:14px}
+.t-read{font-family:var(--font-mono);font-size:34px;line-height:1;direction:ltr;text-align:right;font-variant-numeric:tabular-nums}
+.timer.is-done .t-read{color:#FF9A8F}
+.t-bar{height:5px;background:var(--dark-line);border-radius:3px;overflow:hidden;display:flex;justify-content:flex-start}
+.t-bar i{display:block;height:100%;background:var(--orange);width:100%}
+.timer.is-done .t-bar i{background:#FF9A8F}
+.t-btns{display:flex;gap:6px}
+.t-msg{font-size:12.5px;color:#FFB4AB;min-height:1.2em}
+.timer .btn{background:transparent;border-color:var(--dark-line);color:var(--on-dark)}
+.timer .btn:hover:not(:disabled){border-color:var(--orange);color:var(--orange)}
+@media (max-width:560px){.timer{flex-basis:100%}}
+
+/* controls */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 20px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer;font-weight:600}
+.btn:hover:not(:disabled){border-color:var(--ink)}
+.btn.primary{background:var(--orange);border-color:var(--orange);color:var(--on-orange)}
+.btn.primary:hover:not(:disabled){filter:brightness(.94);border-color:var(--orange)}
+.btn.sm{padding:5px 14px;font-size:13.5px}
+.btn.ghost{background:none}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.link{background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-size:13.5px}
+.link.danger{color:var(--bad)}
+.inp,select.inp,textarea.inp{width:100%;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;min-width:0}
+textarea.inp{resize:vertical;line-height:1.7}
+.inp:focus{border-color:var(--ink)}
+label{display:block;font-size:13.5px;font-weight:600;margin-bottom:4px}
+.field-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;align-items:flex-start}
+.field-row .inp{max-width:560px}
+.check{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;font-size:14.5px;font-weight:500}
+.check input{width:18px;height:18px;accent-color:var(--dark)}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;justify-content:space-between;align-items:center}
+.hint{color:var(--muted);font-size:13.5px}
+.meta-row{display:flex;justify-content:space-between;margin-top:6px;font-size:13px;color:var(--muted)}
+
+/* paper */
+.paper{display:block;width:100%;min-height:340px;resize:vertical;border:1px solid var(--line);border-radius:16px;padding:6px 18px;
+  background-color:#fff;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 33px,var(--line) 33px,var(--line) 34px);
+  background-attachment:local;line-height:34px;font-size:16px}
+.paper:disabled{opacity:.55;cursor:not-allowed}
+
+/* stage 2 */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:700px){.two{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}
+.box h3{font-size:18px;margin-bottom:10px}
+.add-row{display:flex;gap:8px;margin-bottom:10px}
+.rel-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rel-row .btn{grid-column:1/-1}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 12px;border-radius:99px;border:1px solid var(--line);background:#fff;font-size:13.5px;cursor:default}
+button.chip{cursor:pointer;font-family:inherit}
+button.chip:hover{border-color:var(--ink)}
+.chip.add{background:none;border-style:dashed}
+.chip .x{background:none;border:0;padding:0 2px;cursor:pointer;color:var(--muted);font-size:15px;line-height:1}
+.sugg{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:10px}
+.rels{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.rels li{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--line)}
+.rels b{color:var(--accent);font-weight:700}
+.map-wrap{margin-top:16px;border:1px solid var(--dark-line);border-radius:18px;background:var(--dark-2);overflow-x:auto}
+.map{display:block;width:100%;min-width:540px;height:auto}
+.nd rect{fill:var(--dark);stroke:var(--teal);stroke-width:1.3}
+.nd text{fill:var(--on-dark);font:500 13px var(--font-body)}
+.ed{stroke:var(--teal);stroke-width:1.5;fill:none}
+.ah{fill:var(--teal)}
+.el{fill:var(--orange);font:600 11.5px var(--font-body);paint-order:stroke;stroke:var(--dark-2);stroke-width:4px;stroke-linejoin:round}
+.map-wrap .empty{color:var(--on-dark-muted)}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+
+/* stage 3 */
+.gaps{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.gaps li{display:flex;gap:10px;align-items:center;padding:8px 14px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.gaps .gt{flex:1;min-width:0;overflow-wrap:anywhere}
+.badge{display:inline-block;padding:0 10px;border-radius:7px;font-size:12px;font-weight:600;background:var(--surface-2);color:var(--muted);white-space:nowrap}
+.badge.forgot{background:var(--warn-soft);color:var(--warn)}
+.badge.wrong{background:var(--bad-soft);color:var(--bad)}
+.badge.unlinked{background:var(--teal-soft);color:var(--teal-ink)}
+.badge.b4{background:var(--ok-soft);color:var(--ok)}
+.calib{margin-top:16px}
+.slider{display:flex;align-items:center;gap:12px;margin:8px 0}
+.slider input[type=range]{flex:1;accent-color:var(--orange);min-width:0}
+.slider output{font-family:var(--font-mono);min-width:48px;text-align:left;direction:ltr;font-variant-numeric:tabular-nums}
+.calib-res{margin-top:8px;padding:10px 14px;border-radius:12px;font-size:14.5px}
+.calib-res.ok{background:var(--ok-soft);color:var(--ok)}
+.calib-res.warn{background:var(--warn-soft);color:var(--warn)}
+details.ref{margin-bottom:12px;border:1px solid var(--line);border-radius:14px;padding:8px 14px;background:var(--card)}
+details.ref summary{cursor:pointer;font-weight:600}
+details.ref pre{white-space:pre-wrap;font-family:inherit;margin:8px 0 0;color:var(--muted)}
+
+/* stage 4 */
+.qcard{border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;background:var(--card)}
+.qcard.saved{border-color:var(--ok)}
+.qcard header{display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.qcard header strong{font-weight:600;overflow-wrap:anywhere;flex:1 1 200px;min-width:0}
+.stems{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.qcard .inp{margin-bottom:8px}
+.saved-note{color:var(--ok);font-size:13px;margin-inline-start:8px}
+.err{color:var(--bad);font-size:13px;margin-inline-start:8px}
+.free-list{list-style:none;margin:8px 0 0;padding:0}
+.free-list li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+
+/* runner */
+.prog{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:6px}
+.prog-bar{height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;margin-bottom:16px;display:flex}
+.prog-bar i{display:block;height:100%;background:var(--orange)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:99px;overflow:hidden;margin-bottom:14px}
+.seg button{background:none;border:0;padding:5px 16px;cursor:pointer;font-size:13.5px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--dark);color:var(--on-dark);font-weight:600}
+.rq{font-family:var(--font-display);font-weight:700;font-size:24px;line-height:1.7;margin:4px 0 16px;overflow-wrap:anywhere}
+.ans-box{padding:14px 18px;border-radius:14px;background:var(--accent-soft);margin-bottom:12px;overflow-wrap:anywhere}
+.mine{padding:10px 14px;border:1px dashed var(--line);border-radius:14px;margin-bottom:12px;color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{padding:11px 6px;border-radius:12px;border:1px solid transparent;cursor:pointer;font-weight:700}
+.rate .ok{background:var(--ok-soft);color:var(--ok)}
+.rate .part{background:var(--warn-soft);color:var(--warn)}
+.rate .bad{background:var(--bad-soft);color:var(--bad)}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 16px}
+.sum span{padding:6px 16px;border-radius:12px;font-weight:700}
+.sum .ok{background:var(--ok-soft);color:var(--ok)}
+.sum .part{background:var(--warn-soft);color:var(--warn)}
+.sum .bad{background:var(--bad-soft);color:var(--bad)}
+.miss{margin:8px 0 0;padding-inline-start:20px;color:var(--muted);font-size:14px}
+
+/* review */
+.today{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:18px}
+.today h2{font-weight:800;font-size:26px}
+.boxes{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:20px}
+@media (max-width:560px){.boxes{grid-template-columns:repeat(3,1fr)}}
+.bx{background:var(--dark);color:var(--on-dark);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.bx .n{font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1.2;color:var(--orange);font-variant-numeric:tabular-nums}
+.bx .l{font-size:12.5px;color:var(--on-dark-muted)}
+.bx .m{height:4px;border-radius:2px;background:var(--dark-line);overflow:hidden;display:flex;margin-top:6px}
+.bx .m i{display:block;height:100%;background:var(--orange)}
+.grp{margin-bottom:16px}
+.grp h3{font-size:17px;margin-bottom:6px;color:var(--accent)}
+.cl{list-style:none;margin:0;padding:0}
+.ci{display:flex;gap:12px;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.ci-q{min-width:0;overflow-wrap:anywhere;font-size:14.5px}
+.ci-m{display:flex;gap:10px;align-items:center;flex-shrink:0}
+.foot{margin-top:24px;display:flex;justify-content:center}
+@media (prefers-reduced-motion:no-preference){.t-bar i,.prog-bar i{transition:width .25s linear}}
+.steps.axes{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.sd.hi{color:var(--orange);font-weight:600}
+.fchips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 14px}
+.fchips .chip{cursor:pointer;font-family:inherit;text-align:right}
+.chip[aria-pressed="true"]{background:var(--dark);color:var(--on-dark);border-color:var(--dark)}
+.ck{list-style:none;margin:12px 0;padding:0;display:grid;gap:6px}
+.ck label{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;font-size:14.5px}
+.ck label.on{background:var(--ok-soft);border-color:var(--ok)}
+.ck input{margin-top:5px;accent-color:var(--ok)}
+.cov{display:flex;align-items:center;gap:12px;margin:12px 0}
+.cov b{font-family:var(--font-mono);font-size:22px;color:var(--accent);min-width:56px}
+.bar{flex:1;height:10px;background:var(--surface-2);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange)}
+.ref{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.ref summary{cursor:pointer;font-weight:600}
+.ref pre{white-space:pre-wrap;font-family:inherit;margin:8px 0 0;color:var(--muted)}
+.exgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:14px}
+.extile{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:right;background:var(--dark);color:var(--on-dark);border:1px solid var(--dark-line);border-radius:18px;padding:14px;cursor:pointer}
+.extile:hover{border-color:var(--orange)}
+.extile .hint{color:var(--on-dark-muted)}
+.extile .badge{background:var(--dark-2);color:var(--orange)}
+.mrow{display:grid;gap:6px;padding:10px 12px;margin-bottom:8px;border:1px solid var(--line);border-radius:12px}
+.mrow.ok{background:var(--ok-soft);border-color:var(--ok)}
+.mrow.bad{background:var(--bad-soft);border-color:var(--bad)}
+.ml{font-weight:600}
+.fix{font-size:13.5px;color:var(--ok)}
+.ord{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:600px){.ord{grid-template-columns:1fr}}
+.olist{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.olist button{width:100%;text-align:right;padding:9px 12px;border-radius:12px;border:1px solid var(--line);background:#fff;cursor:pointer}
+.olist button:disabled{cursor:default}
+.olist.mine li.ok button{background:var(--ok-soft);border-color:var(--ok)}
+.olist.mine li.bad button{background:var(--bad-soft);border-color:var(--bad)}
+.calc-q{margin:8px 0 12px}
+.calc-q ul{margin:6px 0;padding-inline-start:22px}
+.ansrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ansrow .inp{max-width:180px;direction:ltr;text-align:left}
+.sol{white-space:pre-wrap;margin-top:10px;padding:12px;border-radius:12px;background:var(--cream);font-family:var(--font-mono);font-size:13.5px;direction:rtl;line-height:1.9}
+.mine .ans-box,.mine{overflow-wrap:anywhere}
+
+.grade{display:flex;gap:18px;align-items:center;background:var(--dark);color:var(--on-dark);border-radius:20px;padding:18px 20px;margin-bottom:14px;flex-wrap:wrap}
+.g-num{display:flex;align-items:baseline;gap:8px}
+.g-num b{font-family:var(--font-display);font-weight:800;font-size:56px;line-height:1;color:var(--orange)}
+.g-num span{color:var(--on-dark-muted)}
+.g-txt h2{color:var(--on-dark)}
+textarea.report{width:100%;line-height:1.8;font-size:14px;resize:vertical}
+</style>
+
+<div class="wrap" dir="rtl" lang="ar" id="app"></div>
+
+<script>
+(function(){
+'use strict';
+var app=document.getElementById('app');
+try{document.documentElement.setAttribute('dir','rtl');document.documentElement.setAttribute('lang','ar');}catch(e){}
+
+/* ================= محتوى الدرس ================= */
+var AXES=[
+{id:1,lo:"1.1 · 1.2",t:"المواد الكيميائية وطرق دخولها إلى الجسم",kp:[
+"يتوفر في السوق نحو 16 مليون مادة كيميائية، ويتعرض البشر بشكل متزايد لمواد خطرة في بيئات عملهم ومعيشتهم",
+"تسبب المواد الكيميائية أمراضًا منها: ضعف القدرة التنفسية، التهابات الجلد، الاضطرابات النفسية العصبية، والأمراض الورمية",
+"البيانات الكافية لتصنيف المواد وفق خصائصها السمية والفيزيائية والكيميائية متوفرة لنحو 14% فقط من المركبات شائعة الاستخدام",
+"حد التعرض المهني (OEL): أقصى تركيز لمادة خطرة (غاز أو بخار أو غبار أو ألياف) في هواء مكان العمل يمكن أن يتعرض له العمال خلال فترة محددة، غالبًا 8 ساعات، دون آثار صحية ضارة",
+"توجد المواد على شكل غازات أو أبخرة أو سوائل أو أجسام صلبة، وتُمتص غالبًا عبر: الجهاز التنفسي، الجلد، الجهاز الهضمي",
+"الغازات والأبخرة تُمتص مباشرة عبر الجهاز التنفسي حسب النشاط البدني، ويمكن التخلص من بعض الغبار مع المخاط أو السعال مع البلغم أو ابتلاعه",
+"الجلد هو الغطاء الخارجي للجسم يحميه من العوامل البيئية؛ بعض المواد تدمره وبعضها يُمتص عبره",
+"عوامل كفاءة الامتصاص عبر الجلد: حالة الجلد، الاختلافات التشريحية، العمر، درجة الحرارة، الرطوبة",
+"الامتصاص عبر الجهاز الهضمي يتم من الفم والمريء والمعدة والأمعاء، وهو سريع جدًا في الأمعاء لأن الغشاء المخاطي المعوي مكيّف فسيولوجيًا للامتصاص",
+"الشكل الكيميائي للمعدن مهم: ميثيل الزئبق يُمتص هضميًا بكفاءة 90–100%، والزئبق غير العضوي 10% فقط، والزئبق المعدني لا يُمتص بهذه الطريقة",
+"انخفاض الكالسيوم والحديد والبروتينات في النظام الغذائي يزيد امتصاص المعادن السامة مثل الرصاص والكادميوم"]},
+{id:2,lo:"1.2",t:"التسمم الكيميائي وتأثير المواد على الجسم",kp:[
+"التعرض لمادة واحدة قد يختلف عن التعرض لأكثر من مادة",
+"التأثير التآزري (Synergistic): اجتماع مادتين يعطي تأثيرًا أقوى من كل منهما منفردة، مثل مبيدات تحتوي البيرثرويد وبيبيرونيل بوتوكسيد",
+"تقييم التأثيرات المجمعة صعب بسبب تعقيد التعرضات في العالم الحقيقي والعدد الهائل من التركيبات المحتملة",
+"يحدث التسمم عندما يتجاوز التعرض حدود القدرة البشرية، أي عندما لا يستطيع الجسم التخلص من المواد بالهضم أو الإخراج",
+"التسمم الحاد: امتصاص مادة بجرعة عالية أو لمرة واحدة خلال فترة قصيرة (24 ساعة)",
+"التسمم المزمن: تأثيرات بعد التعرض لفترات طويلة لجرعات أو تركيزات منخفضة، مثل تلوث الهواء أو الماء أو الغذاء",
+"حالات التسمم المهني تكون عادةً مزمنة",
+"تعتمد الاستجابة على: الخصائص الفيزيائية والكيميائية، مسار الامتصاص، فترة التعرض، صحة الشخص، الجنس، العمر، حالة الجهاز المناعي، الحرارة والرطوبة",
+"التأثيرات نوعان: موضعية (تآكلية ومهيجة) وجهازية (سامة للجينات، مسرطنة، سمية للأجنة، مسببة للتشوهات)",
+"التأثيرات الموضعية تحدث في موقع ملامسة المادة: الجلد أو العين أو الجهاز التنفسي",
+"أمثلة الموضعية: فلوريد الهيدروجين، كلوريد الهيدروجين، الأمونيوم، الفورمالديهايد، الكلور، أكاسيد النيتروجين، حمض الأسيتيك، الصابون والمواد المعقمة",
+"الجهاز العصبي: قد يحدث تثبيط أو تحفيز للتوصيل العصبي، واعتلال الدماغ (المركزي) أو اعتلال الأعصاب (المحيطي)",
+"مواد تؤثر في الجهاز العصبي: الكلوروألكانات، ثاني كبريتيد الكربون، أبخرة الزئبق والرصاص، الألكانات (الهكسان)، الكيتونات الأليفاتية، الباراثيون، المركبات الفوسفورية العضوية",
+"الكبد: مركبات النيترو (النيتروتولوين)، الكلوروألكانات، ومشتقات الكلورو-بروموبنزين",
+"الكلى: رابع كلوريد الكربون وإيثيلين جليكول وثاني كبريتيد الكربون تؤثر في قدرتها على التخلص من السموم؛ والكادميوم والرصاص والتربنتين والميثانول والتولوين والزيلين تؤثر بشكل أبطأ",
+"الجهاز التناسلي: ضعف الخصوبة لدى الرجال (ثنائي بروميد الإيثيلين، البنزين، غازات التخدير، الكلوروبرين، الرصاص، المذيبات العضوية، ثاني كبريتيد الكربون) وحالات الإجهاض (غازات التخدير، الغلوتارالدهيد، الكلوروبرين، الرصاص، المذيبات العضوية، ثاني كبريتيد الكربون، كلوريد الفينيل)"]},
+{id:3,lo:"1.2",t:"المواد المسرطنة وقياس تأثيرها",kp:[
+"التعرض لبعض المواد الكيميائية قد يسبب نموًا غير منضبط للخلايا يؤدي إلى أمراض سرطانية",
+"معظم المواد المسرطنة لا يمكن تحديد مستويات تعرض آمنة لها",
+"فترة الكمون (Latency Period): تظهر الآفات السرطانية بعد سنوات من أول تعرض، وتتراوح بين 4 و40 عامًا",
+"السرطانات المهنية قد تتمركز في أماكن مختلفة من الجسم ولا تقتصر على المناطق التي لامست المادة مباشرة",
+"سرطان الرئة: الزرنيخ، الأسبستوس، الكروم، النيكل",
+"أورام تجويف الأنف والجيوب الأنفية: الكروم، النيكل، زيوت الأيزوبروبيل، غبار الخشب، غبار الجلود المدبوغة",
+"سرطان المثانة: البنزيدين، 2-نفثيلامين، غبار الجلد المدبوغ",
+"سرطان الجلد: الزرنيخ، قطران الفحم، مشتقات البترول المحتوية على الهيدروكربونات العطرية متعددة الحلقات",
+"سرطان الكبد: كلوريد الفينيل. سرطان نخاع العظم: البنزين",
+"لصعوبة تحديد مستويات التعرض الآمنة لا تضع دول كثيرة حدود تعرض للمسرطنات، فتستخدم الجهات مفهوم المخاطر المقبولة (acceptable risk) لتحديد أو اقتراح مستويات التعرض",
+"يعتمد مستوى المخاطر المقبولة على المعايير الاجتماعية والاقتصادية، ويُتخذ القرار بشأنه من ثلاث مجموعات: ممثلو الموظفين، أصحاب العمل، مسؤولو الدولة"]},
+{id:4,lo:"2.1 · 2.2",t:"حدود التعرض وصحيفة SDS وقياس المواد في الهواء",kp:[
+"يوجد تركيز مسموح به للمواد الكيميائية الضارة يجوز عنده تعرض العمال دون آثار صحية ضارة، ويُعد الوقت عاملًا مؤثرًا في تحديده",
+"MAC-TWA: تركيز ليوم عمل تقليدي 8 ساعات وأسبوع عمل يجوز للعمال التعرض له طوال حياتهم العملية دون آثار سلبية على صحتهم أو على صحة الأجيال القادمة",
+"MAC-STEL: متوسط التركيز الذي يجوز التعرض له دون آثار سلبية إذا لم يستمر أكثر من 15 دقيقة ولم يحدث أكثر من مرتين خلال يوم العمل بفاصل لا يقل عن ساعة",
+"MAC-C: تركيز لا ينبغي تجاوزه ولو للحظة واحدة بسبب التهديد بصحة العمال أو حياتهم",
+"أوراق بيانات السلامة (SDS) تعرّف بمعلومات أساسية عن المواد والمستحضرات الكيميائية موجهة لعامة الجمهور",
+"تُصنف المواد خطرة إذا كانت: متفجرة، مؤكسدة، قابلة للاشتعال، شديدة السمية، سامة، ضارة، مسببة للتآكل، مهيجة، محسسة، مسرطنة، سامة للجينات، مضعفة للتكاثر، أو ضارة بالبيئة",
+"محتويات SDS: تاريخ الإصدار، تعريف المادة والشركة، تحديد المخاطر، التركيب، الإسعافات الأولية، مكافحة الحرائق، تدابير التسرب العرضي، المناولة والتخزين، ضوابط التعرض أو الحماية الشخصية، الخصائص الفيزيائية والكيميائية، الثبات والتفاعلية، السمية، المعلومات البيئية، اعتبارات التخلص، النقل، المعلومات التنظيمية، معلومات أخرى",
+"يجب قياس تركيز المواد الكيميائية في هواء مكان العمل بواسطة مختبرات معتمدة وفقًا للوائح المحلية والدولية",
+"القياسات نوعان: قياسات لتقييم التعرض للاستنشاق، وقياسات لتقييم التعرض الجلدي"]}
+];
+
+var CARDS=[
+[1,"كم عدد المواد الكيميائية المتوفرة في السوق تقريبًا؟ وما أبرز الأمراض التي تسببها؟","حوالي 16 مليون مادة كيميائية. تسبب أمراضًا منها: ضعف القدرة التنفسية، التهابات الجلد، الاضطرابات النفسية العصبية، والأمراض الورمية."],
+[1,"ما نسبة المركبات شائعة الاستخدام التي تتوفر عنها بيانات كافية لتصنيفها؟","نحو 14% فقط، إذ لا تتوفر بيانات كافية لتصنيف هذه المواد وفق خصائصها السمية والفيزيائية والكيميائية إلا لهذه النسبة."],
+[1,"عرّف حد التعرض المهني (OEL).","هو الحد الأقصى لتركيز مادة خطرة (مثل الغاز أو البخار أو الغبار أو الألياف) في هواء مكان العمل الذي يمكن أن يتعرض له العمال خلال فترة زمنية محددة، غالبًا يوم عمل من 8 ساعات، دون آثار صحية ضارة. وهو المعيار الرئيسي لتقييم التعرض المهني."],
+[1,"على أي أشكال توجد المواد الكيميائية؟ وما المسارات الرئيسية لامتصاصها؟","توجد على شكل غازات أو أبخرة أو سوائل أو أجسام صلبة. وتُمتص غالبًا عبر الجهاز التنفسي، والجلد، والجهاز الهضمي."],
+[1,"كيف تُمتص الغازات والأبخرة عبر الجهاز التنفسي؟ وكيف يمكن التخلص من بعض الغبار؟","تُمتص مباشرة في الجسم عبر الجهاز التنفسي حسب النشاط البدني. ويمكن التخلص من بعض الغبار مع المخاط، أو بالسعال مع البلغم، أو بابتلاعه."],
+[1,"ما دور الجلد؟ وماذا قد تفعل المواد الكيميائية به؟","الجلد هو الغطاء الخارجي للجسم ويحميه من العوامل البيئية. بعض المواد الكيميائية تدمره، وبعضها يُمتص عن طريقه."],
+[1,"اذكر العوامل التي تؤثر في كفاءة امتصاص المواد الكيميائية عبر الجلد.","حالة الجلد، الاختلافات التشريحية، العمر، درجة الحرارة، والرطوبة."],
+[1,"من أي أجزاء الجهاز الهضمي يمكن أن يحدث الامتصاص؟ ولماذا هو سريع جدًا في الأمعاء؟","يحدث عبر الفم والمريء والمعدة والأمعاء. وهو سريع جدًا في الأمعاء لأن الغشاء المخاطي المعوي مكيّف فسيولوجيًا للامتصاص."],
+[1,"لماذا تُعد معرفة الشكل الكيميائي للمعدن مهمة؟ أعطِ مثال الزئبق.","لأن كفاءة الامتصاص تختلف باختلاف الشكل. ميثيل الزئبق يُمتص من الجهاز الهضمي بكفاءة تتراوح بين 90% و100%، ومركبات الزئبق غير العضوية بكفاءة 10% فقط، والزئبق المعدني لا يُمتص بهذه الطريقة."],
+[1,"كيف يؤثر النظام الغذائي في امتصاص المعادن السامة هضميًا؟","انخفاض مستويات الكالسيوم وأيونات الحديد والبروتينات في النظام الغذائي يسبب زيادة في امتصاص المعادن السامة مثل الرصاص والكادميوم."],
+
+[2,"ما الفرق بين التعرض لمادة واحدة والتعرض لأكثر من مادة؟ وما التأثير التآزري؟","التعرض لمادة واحدة قد يختلف عن التعرض لأكثر من مادة. فهناك مواد يكون تأثيرها أقوى عندما تجتمع معًا (أقوى من تأثير كل مادة على حدة)، ويسمى هذا التأثير التآزري (Synergistic Effects)، مثل بعض مبيدات الحشرات التي تحتوي على مادتي البيرثرويد وبيبيرونيل بوتوكسيد."],
+[2,"لماذا يظل تقييم التأثيرات المجمعة صعبًا؟","بسبب تعقيد التعرضات في العالم الحقيقي والعدد الهائل من التركيبات الكيميائية المحتملة."],
+[2,"متى يحدث التسمم؟","عندما يتجاوز التعرض للمواد أو المستحضرات الكيميائية حدود القدرة البشرية، أي عندما لا يستطيع الجسم التخلص من هذه المواد سواء عن طريق الهضم أو الإخراج."],
+[2,"عرّف التسمم الحاد.","تحدث آثار ضارة نتيجة امتصاص الجسم لمادة بجرعة عالية أو لمرة واحدة، ويحدث خلال فترة زمنية قصيرة (خلال 24 ساعة)."],
+[2,"عرّف التسمم المزمن مع أمثلة لمصادره.","تحدث التأثيرات الضارة بعد التعرض لفترات طويلة لجرعات أو تركيزات منخفضة من المواد الموجودة في البيئة الصناعية أو المعيشية، مثل تلوث الهواء أو الماء أو الغذاء."],
+[2,"أي نوع من التسمم تكون عليه حالات التسمم المهني عادةً؟","مزمنة."],
+[2,"على ماذا تعتمد استجابة الجسم للمواد الكيميائية؟","الخصائص الفيزيائية والكيميائية للمادة، مسار الامتصاص، فترة التعرض، صحة الشخص المعرَّض، الجنس، العمر، حالة الجهاز المناعي، ودرجة الحرارة والرطوبة."],
+[2,"إلى ماذا تنقسم تأثيرات المواد الكيميائية على جسم الإنسان؟","تأثيرات موضعية (تآكلية ومهيجة)، وتأثيرات جهازية (سامة للجينات، ومسببة للسرطان، وسمية للأجنة، ومسببة للتشوهات)."],
+[2,"أين تحدث التأثيرات الموضعية؟ واذكر خمسة أمثلة لمواد لها هذا التأثير.","تحدث في موقع ملامسة المادة، مثل الجلد أو العين أو الجهاز التنفسي. أمثلة: فلوريد الهيدروجين، كلوريد الهيدروجين، الأمونيوم، الفورمالديهايد، الكلور، أكاسيد النيتروجين، حمض الأسيتيك، الصابون والمواد المعقمة."],
+[2,"ماذا قد تفعل المواد السامة بالجهاز العصبي؟","قد تؤدي إلى خلل في التوصيل العصبي بالتثبيط الخارجي أو التحفيز في الجهازين العصبيين المركزي والمحيطي، وإلى اضطرابات وظيفية: اعتلال الدماغ (المركزي) أو اعتلال الأعصاب (المحيطي)."],
+[2,"اذكر مواد تؤثر في الجهاز العصبي.","الكلوروألكانات، ثاني كبريتيد الكربون، أبخرة الزئبق والرصاص، الألكانات (الهكسان)، الكيتونات الأليفاتية، الباراثيون، والمركبات الفوسفورية العضوية."],
+[2,"ما المواد التي تؤثر في الكبد؟","مركبات النيترو (النيتروتولوين)، الكلوروألكانات، ومشتقات الكلورو-بروموبنزين."],
+[2,"ما المواد التي تؤثر في الكلى؟ وما الفرق بين تأثيرها؟","رابع كلوريد الكربون وإيثيلين جليكول وثاني كبريتيد الكربون تؤثر في قدرة الكلى على التخلص من المواد السامة من الجسم. أما الكادميوم والرصاص والتربنتين والميثانول والتولوين والزيلين فتؤثر في الكلى بشكل أبطأ."],
+[2,"ما المواد المرتبطة بضعف الخصوبة لدى الرجال؟","ثنائي بروميد الإيثيلين، والبنزين، وغازات التخدير، والكلوروبرين، والرصاص، والمذيبات العضوية، وثاني كبريتيد الكربون."],
+[2,"ما المواد التي قد تسبب حالات إجهاض نتيجة التعرض لها؟","غازات التخدير، والغلوتارالدهيد، والكلوروبرين، والرصاص، والمذيبات العضوية، وثاني كبريتيد الكربون، وكلوريد الفينيل (إضافة إلى أكسيد إيثيل الزئبق كما ورد في الشريحة)."],
+[2,"ما الذي ركز عليه علم السموم في دراسة الجهاز التناسلي؟","ركز على آليات الآثار السامة للمواد على الدورة التناسلية بأكملها: إنتاج الخلايا التناسلية لدى الجنسين، وإخصاب البويضة وانغراسها، وتكوين الجنين أو الأعضاء، ونمو الجنين، والولادة، والنمو حتى النضج الجنسي."],
+
+[3,"كيف يمكن أن تسبب المواد الكيميائية السرطان؟","قد يسبب التعرض لبعض المواد الكيميائية نموًا غير منضبط للخلايا، مما يؤدي إلى أمراض سرطانية."],
+[3,"هل يمكن تحديد مستويات تعرض آمنة لمعظم المواد المسرطنة؟","لا، معظم المواد المسرطنة مركبات لا يمكن تحديد مستويات التعرض الآمنة لها."],
+[3,"ما فترة الكمون (Latency Period)؟","الفترة التي تظهر بعدها الآفات السرطانية بعد سنوات عديدة من التعرض الأول للمادة الكيميائية، ويمكن أن تتراوح بين 4 و40 عامًا."],
+[3,"هل تقتصر السرطانات المهنية على المناطق التي لامست المادة الكيميائية مباشرة؟","لا، يمكن أن تتمركز السرطانات التي تتطور بسبب التعرض المهني في أماكن مختلفة من الجسم، ولا تقتصر بالضرورة على المناطق التي كانت على تماس مباشر مع المادة."],
+[3,"اذكر مواد قد تسبب سرطان الرئة.","الزرنيخ، الأسبستوس، الكروم، النيكل."],
+[3,"اذكر مواد قد تسبب أورام تجويف الأنف والجيوب الأنفية.","الكروم، النيكل، زيوت الأيزوبروبيل، غبار الخشب، غبار الجلود المدبوغة."],
+[3,"اذكر مواد قد تسبب سرطان المثانة.","البنزيدين، 2-نفثيلامين، غبار الجلد المدبوغ."],
+[3,"اذكر مواد قد تسبب سرطان الجلد.","الزرنيخ، قطران الفحم، ومشتقات البترول التي تحتوي على الهيدروكربونات العطرية متعددة الحلقات."],
+[3,"ما المادة التي قد تسبب سرطان الكبد؟ وما المادة التي قد تسبب سرطان نخاع العظم؟","كلوريد الفينيل للكبد، والبنزين لنخاع العظم."],
+[3,"لماذا لا تضع دول كثيرة حدود تعرض للمواد المسرطنة؟ وما المفهوم الذي تستخدمه الجهات بدلًا من ذلك؟","لصعوبة تحديد مستويات التعرض الآمنة. وتستخدم الهيئات الحكومية والمنظمات الوطنية أو الدولية مفهوم المخاطر المقبولة (acceptable risk) لتحديد أو اقتراح مستويات التعرض المقبولة للمواد المسرطنة."],
+[3,"على ماذا يعتمد مستوى المخاطر المقبولة؟ ومن يتخذ القرار بشأنه في الدول المتقدمة؟","يعتمد على المعايير الاجتماعية والاقتصادية المتعارف عليها. وتتخذ القرارات ثلاث مجموعات: ممثلون عن الموظفين، وأصحاب العمل، ومسؤولو الدولة."],
+
+[4,"هل يوجد تركيز مسموح به للمواد الكيميائية الضارة؟ وما دور الوقت؟","نعم، يوجد تركيز مسموح به يجوز عنده تعرض العمال دون أي آثار صحية ضارة، وكذلك عند مستويات أقل منه. ويُعد الوقت عاملًا مؤثرًا في تحديد التركيز المسموح به."],
+[4,"عرّف MAC-TWA.","أقصى تركيز مسموح به: هو تركيز ليوم عمل تقليدي مدته 8 ساعات وأسبوع عمل، والذي يجوز للعمال التعرض له طوال حياتهم العملية دون أي آثار سلبية على صحتهم (حتى عند التقاعد) أو على صحة الأجيال القادمة."],
+[4,"عرّف MAC-STEL.","أقصى تركيز مسموح به قصير المدى: هو متوسط التركيز الذي يجوز للعمال التعرض له دون أي آثار صحية سلبية، إذا لم يستمر التعرض لأكثر من 15 دقيقة، ولم يحدث أكثر من مرتين خلال يوم العمل بفاصل بينهما لا يقل عن ساعة."],
+[4,"عرّف MAC-C.","أقصى تركيز مسموح به: تركيز لا ينبغي تجاوزه ولو للحظة واحدة بسبب التهديد بصحة أو حياة العمال."],
+[4,"ما أوراق بيانات السلامة (SDS)؟","معلومات أساسية عن المواد والمستحضرات الكيميائية، موجهة لعامة الجمهور، في شكل أوراق بيانات السلامة (safety data sheets)."],
+[4,"متى تُصنف المواد والمستحضرات الكيميائية على أنها خطرة؟","إذا كانت ذات خصائص متفجرة، مؤكسدة، قابلة للاشتعال، شديدة السمية، سامة، ضارة، مسببة للتآكل، مهيجة، محسسة، مسرطنة، سامة للجينات، مضعفة للتكاثر، أو تلحق الضرر بالبيئة."],
+[4,"اذكر ما لا يقل عن ثمانية من محتويات صحيفة بيانات السلامة.","تاريخ الإصدار، تعريف المادة والشركة، تحديد المخاطر، التركيب أو معلومات المكونات، الإسعافات الأولية، مكافحة الحرائق، تدابير التسرب العرضي، المناولة والتخزين، ضوابط التعرض أو الحماية الشخصية، الخصائص الفيزيائية والكيميائية، الثبات والتفاعلية، معلومات السمية، المعلومات البيئية، اعتبارات التخلص، معلومات النقل، المعلومات التنظيمية، معلومات أخرى."],
+[4,"كيف يجب قياس تركيز المواد الكيميائية في هواء مكان العمل؟","بواسطة مختبرات معتمدة وفقًا للوائح المحلية والدولية."],
+[4,"ما نوعا القياسات التي يمكن أخذها لتقييم التعرض للمواد الكيميائية؟","قياسات لتقييم التعرض للاستنشاق، وقياسات لتقييم التعرض الجلدي."]
+];
+
+var EX=[
+{id:"e1",ax:1,t:"مسارات الدخول إلى الجسم",kind:"match",pairs:[
+["الجهاز التنفسي","تُمتص الغازات والأبخرة مباشرة عبره حسب النشاط البدني"],
+["الجلد","الغطاء الخارجي للجسم؛ بعض المواد تدمره وبعضها يُمتص عبره"],
+["الجهاز الهضمي","الامتصاص عبر الفم والمريء والمعدة والأمعاء، وهو سريع جدًا في الأمعاء"]]},
+{id:"e2",ax:1,t:"الامتصاص الهضمي للزئبق",kind:"match",pairs:[
+["ميثيل الزئبق","يُمتص بكفاءة بين 90% و100%"],
+["مركبات الزئبق غير العضوية","تُمتص بكفاءة 10% فقط"],
+["الزئبق المعدني","لا يُمتص بهذه الطريقة"]]},
+{id:"e3",ax:2,t:"مفاهيم التسمم والتأثير",kind:"match",pairs:[
+["التسمم الحاد","جرعة عالية أو لمرة واحدة خلال فترة قصيرة (24 ساعة)"],
+["التسمم المزمن","تعرض طويل لجرعات أو تركيزات منخفضة"],
+["التأثير التآزري","اجتماع مادتين يعطي تأثيرًا أقوى من كل منهما منفردة"],
+["التأثير الموضعي","يحدث في موقع ملامسة المادة"]]},
+{id:"e4",ax:2,t:"المادة والعضو المتأثر",kind:"match",pairs:[
+["الباراثيون والمركبات الفوسفورية العضوية","الجهاز العصبي"],
+["النيتروتولوين ومشتقات الكلورو-بروموبنزين","الكبد"],
+["رابع كلوريد الكربون وإيثيلين جليكول","قدرة الكلى على التخلص من السموم"],
+["ثنائي بروميد الإيثيلين","ضعف الخصوبة لدى الرجال"]]},
+{id:"e5",ax:3,t:"المادة المسرطنة والسرطان المرتبط",kind:"match",pairs:[
+["الأسبستوس","سرطان الرئة"],
+["البنزيدين و2-نفثيلامين","سرطان المثانة"],
+["كلوريد الفينيل","سرطان الكبد"],
+["البنزين","سرطان نخاع العظم"],
+["قطران الفحم","سرطان الجلد"],
+["غبار الخشب","أورام تجويف الأنف والجيوب الأنفية"]]},
+{id:"e6",ax:3,t:"مفاهيم المسرطنات",kind:"match",pairs:[
+["فترة الكمون","تتراوح بين 4 و40 عامًا"],
+["المخاطر المقبولة","مفهوم تستخدمه الجهات لتحديد أو اقتراح مستويات التعرض للمسرطنات"],
+["من يقرر المخاطر المقبولة","ممثلو الموظفين وأصحاب العمل ومسؤولو الدولة"]]},
+{id:"e7",ax:4,t:"حدود التعرض المسموح بها",kind:"match",pairs:[
+["MAC-TWA","تركيز ليوم عمل تقليدي 8 ساعات وأسبوع عمل، يجوز التعرض له طوال الحياة العملية"],
+["MAC-STEL","متوسط تركيز لا يستمر أكثر من 15 دقيقة ولا يحدث أكثر من مرتين يوميًا بفاصل ساعة"],
+["MAC-C","تركيز لا ينبغي تجاوزه ولو للحظة واحدة"]]},
+{id:"e8",ax:4,t:"قياس التعرض",kind:"match",pairs:[
+["قياسات لتقييم التعرض للاستنشاق","قياس تركيز المواد في هواء مكان العمل"],
+["قياسات لتقييم التعرض الجلدي","قياس التعرض عبر الجلد"],
+["جهة القياس","مختبرات معتمدة وفقًا للوائح المحلية والدولية"]]}
+];
+
+/* ================= أدوات ================= */
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function arNum(n){return String(n).replace(/\d/g,function(d){return '٠١٢٣٤٥٦٧٨٩'.charAt(+d);});}
+function pad(n){return String(n).padStart(2,'0');}
+function fmtT(sec){return pad(Math.floor(sec/60))+':'+pad(sec%60);}
+function words(s){var t=(s||'').trim();return t?t.split(/\s+/).length:0;}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function byId(id){return document.getElementById(id);}
+function axById(id){return AXES.filter(function(a){return a.id===id;})[0];}
+function rint(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function num(x){return String(+x.toFixed(2));}
+
+/* ================= الحالة ================= */
+var P={recall:{},cards:{},ex:{}};
+var view='axes',RC=null,CS=null,EXS=null;
+var CF={axes:{},weak:false};
+var confirmReset=false,focusId=null,note='';
+var RT={state:'idle',remaining:300,total:300,end:0,iv:null};
+
+/* ================= التخزين ================= */
+var LS_KEY='lec7-recall-v3',dbDoc=null,dbFail=false,saveTimer=null,saving=false,dirty=false;
+function snap(){return {v:3,savedAt:Date.now(),P:P};}
+function lsGet(){try{var r=localStorage.getItem(LS_KEY);return r?JSON.parse(r):null;}catch(e){return null;}}
+function lsSet(p){try{localStorage.setItem(LS_KEY,JSON.stringify(p));}catch(e){}}
+function save(){clearTimeout(saveTimer);saveTimer=setTimeout(flush,500);}
+function flush(){
+  if(saving){dirty=true;return Promise.resolve();}
+  saving=true;
+  var loop=function(){
+    dirty=false;
+    var p=snap();lsSet(p);
+    if(dbDoc&&!dbFail){
+      return dbDoc.set(JSON.parse(JSON.stringify(p))).catch(function(){dbFail=true;}).then(function(){if(dirty)return loop();});
+    }
+    if(dirty)return loop();
+    return Promise.resolve();
+  };
+  return loop().then(function(){saving=false;updateBadge();},function(){saving=false;});
+}
+function badgeText(){return (dbDoc&&!dbFail)?'تقدّمك محفوظ في حسابك':'تقدّمك محفوظ في هذا المتصفح فقط';}
+function updateBadge(){var b=byId('savebadge');if(b)b.textContent=badgeText();}
+function initStorage(){
+  return Promise.resolve().then(function(){
+    if(!window.claude||typeof window.claude.use!=='function')return;
+    return Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
+      if(!r[0]||!r[1])return;
+      return Promise.resolve(r[1].id()).then(function(id){if(id)dbDoc=r[0].doc('data/users/'+id+'/profile');});
+    });
+  }).catch(function(){dbDoc=null;});
+}
+function loadAll(){
+  var best=lsGet();
+  var work=initStorage().then(function(){
+    if(!dbDoc)return;
+    return dbDoc.get().then(function(s){
+      if(s.exists){var d=s.data();if(d&&(!best||(d.savedAt||0)>(best.savedAt||0)))best=JSON.parse(JSON.stringify(d));}
+    }).catch(function(){dbFail=true;});
+  });
+  var timeout=new Promise(function(r){setTimeout(r,3000);});
+  return Promise.race([work,timeout]).then(function(){
+    if(best&&best.v===3&&best.P){P=Object.assign({recall:{},cards:{},ex:{}},best.P);}
+  });
+}
+
+/* ================= المؤقّت ================= */
+function timerLabel(){return RT.state==='run'?'إيقاف مؤقت':RT.state==='pause'?'استئناف':RT.state==='done'?'انتهى':'ابدأ المؤقت';}
+function resetTimer(){clearInterval(RT.iv);RT={state:'idle',remaining:300,total:300,end:0,iv:null};}
+function updateTimerDOM(){
+  var r=byId('t-read');if(!r)return;
+  r.textContent=fmtT(RT.remaining);
+  var f=byId('t-fill');if(f)f.style.width=(RT.total?RT.remaining/RT.total*100:0)+'%';
+  var b=byId('t-toggle');if(b){b.textContent=timerLabel();b.disabled=RT.state==='done';}
+  var bx=byId('timer');if(bx)bx.classList.toggle('is-done',RT.state==='done');
+  var m=byId('t-msg');if(m)m.textContent=RT.state==='done'?'انتهى الوقت المقترح. أنهِ فكرتك الأخيرة ثم قارن.':'';
+}
+function tick(){
+  RT.remaining=Math.max(0,Math.ceil((RT.end-Date.now())/1000));
+  if(RT.remaining===0){RT.state='done';clearInterval(RT.iv);}
+  updateTimerDOM();
+}
+function timerToggle(){
+  if(RT.state==='run'){RT.remaining=Math.max(0,Math.ceil((RT.end-Date.now())/1000));RT.state='pause';clearInterval(RT.iv);}
+  else if(RT.state==='idle'||RT.state==='pause'){RT.end=Date.now()+RT.remaining*1000;RT.state='run';clearInterval(RT.iv);RT.iv=setInterval(tick,250);}
+  updateTimerDOM();
+}
+function timerHTML(){
+  return '<div class="timer'+(RT.state==='done'?' is-done':'')+'" id="timer">'+
+    '<div class="t-read" id="t-read" role="timer" aria-label="الوقت المتبقي">'+fmtT(RT.remaining)+'</div>'+
+    '<div class="t-bar"><i id="t-fill" style="width:'+(RT.total?RT.remaining/RT.total*100:0)+'%"></i></div>'+
+    '<div class="t-btns"><button class="btn sm" id="t-toggle" data-act="t-toggle">'+timerLabel()+'</button><button class="btn sm ghost" data-act="t-reset">إعادة</button></div>'+
+    '<div class="t-msg" id="t-msg" aria-live="polite"></div></div>';
+}
+
+/* ================= الواجهة العامة ================= */
+function headerHTML(){
+  return '<header class="top"><div class="eyebrow-row"><span class="kicker">مقرر السلامة والصحة المهنية (121 سلا)</span><span class="savebadge" id="savebadge">'+badgeText()+'</span></div>'+
+    '<h1>استرجاع المحاضرة السابعة</h1><p class="sub">قياس وتقييم آثار المواد الكيميائية، مقتصرة على ما ورد في ملف المحاضرة، في أربعة محاور تخدم نواتج التعلم. اكتب ما تتذكره أولًا، ثم قارن بنقاط الدرس، واختبر نفسك بالبطاقات والتمارين، وفي النهاية انسخ تغذيتك الراجعة ودرجتك.</p></header>';
+}
+function navHTML(){
+  var tabs=[['axes','المحاور'],['cards','البطاقات'],['ex','التمارين'],['result','النتيجة']];
+  var cur=view==='recall'?'axes':view;
+  return '<div class="tabs" role="tablist">'+tabs.map(function(t){return '<button class="tab" role="tab" data-act="view" data-v="'+t[0]+'" aria-selected="'+(cur===t[0])+'">'+t[1]+'</button>';}).join('')+'</div>';
+}
+function noteHTML(){return note?'<p class="note" role="status">'+esc(note)+'</p>':'';}
+function taskHTML(txt){return '<div class="task"><small>المهمة</small><p>'+txt+'</p></div>';}
+
+/* ================= المحاور ================= */
+function axesHTML(){
+  var withKp=AXES.filter(function(a){return a.kp;}),done=withKp.filter(function(a){return P.recall[a.id];}).length;
+  return taskHTML('أربعة محاور فقط من ملف المحاضرة، كلٌّ منها مرتبط بنواتج التعلم في توصيف المقرر. اختر محورًا واكتب ما تتذكره دون النظر إلى الدرس، ثم قارن بنقاطه الأساسية.')+
+    '<p class="hint" style="margin-bottom:12px">محاور استرجعتها: '+done+' من '+withKp.length+'</p>'+
+    '<ol class="steps axes" aria-label="محاور المحاضرة">'+AXES.map(function(a){
+      var st,hi='';
+      if(a.kp){var r=P.recall[a.id];st=r?('آخر استرجاع: '+r.pct+'%'):'لم تبدأ بعد';if(r&&r.pct>=70)hi=' hi';}
+      else st='بطاقات تطبيقية فقط';
+      return '<li><button class="step" data-act="axis" data-id="'+a.id+'"><span class="sn">'+arNum(a.id)+'</span><span class="st">'+esc(a.t)+'</span><span class="sd">نواتج التعلم: '+esc(a.lo)+'</span><span class="sd'+hi+'">'+st+'</span></button></li>';
+    }).join('')+'</ol>'+
+    '<div class="foot"><button class="btn sm ghost" data-act="resetprog">'+(confirmReset?'تأكيد: امسح كل تقدمي':'مسح تقدمي')+'</button></div>';
+}
+function startRecall(id){RC={ax:id,stage:0,ack:false,text:'',ticks:{}};resetTimer();view='recall';note='';render();toTop();}
+function covOf(){var a=axById(RC.ax),n=0;a.kp.forEach(function(k,i){if(RC.ticks[i])n++;});return {n:n,total:a.kp.length,pct:Math.round(n/a.kp.length*100)};}
+function recallHTML(){
+  var a=axById(RC.ax),h='<section class="panel" id="panel"><header class="p-head"><div><p class="eyebrow">المحور '+arNum(a.id)+' · نواتج التعلم '+esc(a.lo)+'</p><h2>'+esc(a.t)+'</h2></div>'+(RC.stage===0?timerHTML():'')+'</header>';
+  if(RC.stage===0){
+    var wc=words(RC.text);
+    h+=taskHTML('أغلق الدرس والملاحظات، واكتب كل ما تتذكره عن هذا المحور: مفاهيم وتعريفات وأرقام وأمثلة. لا تهتم بالترتيب ولا بالإملاء.')+
+      '<label class="check"><input type="checkbox" data-act="rack"'+(RC.ack?' checked':'')+'> أغلقتُ الدرس وكل المصادر</label>'+
+      '<textarea id="rtext" class="paper" data-bind="rtext" aria-label="ما أتذكره"'+(RC.ack?'':' disabled')+' placeholder="'+(RC.ack?'ابدأ الكتابة الآن…':'فعّل الخانة أعلاه لتفتح لك الصفحة.')+'">'+esc(RC.text)+'</textarea>'+
+      '<div class="meta-row"><span id="wc">الكلمات: '+wc+'</span><span>المؤقّت اختياري</span></div>'+
+      '<div class="actions"><button class="btn" data-act="tohome">رجوع إلى المحاور</button><button class="btn primary" id="cmpbtn" data-act="compare"'+(wc<1?' disabled':'')+'>قارن بنقاط الدرس</button></div>';
+  }else{
+    var c=covOf(),missed=[];
+    a.kp.forEach(function(k,i){if(!RC.ticks[i])missed.push(k);});
+    h+=taskHTML('افتح الدرس إن احتجت، وعلّم النقاط التي ذكرتها فعلًا في كتابتك، لا التي عرفتها الآن.')+
+      '<details class="ref"><summary>ما كتبتَه من الذاكرة</summary><pre>'+esc(RC.text)+'</pre></details>'+
+      '<ul class="ck">'+a.kp.map(function(k,i){return '<li><label class="'+(RC.ticks[i]?'on':'')+'"><input type="checkbox" data-act="tick" data-i="'+i+'"'+(RC.ticks[i]?' checked':'')+'><span>'+esc(k)+'</span></label></li>';}).join('')+'</ul>'+
+      '<div class="cov"><b>'+c.pct+'%</b><div class="bar"><i style="width:'+c.pct+'%"></i></div><span class="hint">ذكرتَ '+c.n+' من '+c.total+'</span></div>'+
+      (missed.length?'<div class="box"><h3>ما لم تذكره بعد ('+missed.length+')</h3><p class="hint">هذه فجواتك. اقرأها ثم اختبر نفسك عليها بالبطاقات.</p></div>':'<div class="calib-res ok">ذكرتَ كل النقاط الأساسية لهذا المحور.</div>')+
+      '<div class="actions"><button class="btn" data-act="tohome">رجوع إلى المحاور</button><button class="btn primary" data-act="axcards" data-id="'+a.id+'">اختبرني بأسئلة هذا المحور</button></div>';
+  }
+  return h+'</section>';
+}
+function saveRecall(){
+  var a=axById(RC.ax),c=covOf(),missed=[];
+  a.kp.forEach(function(k,i){if(!RC.ticks[i])missed.push(i);});
+  P.recall[a.id]={pct:c.pct,n:c.n,total:c.total,missed:missed};save();
+}
+
+/* ================= البطاقات ================= */
+function selIds(){
+  var ax=Object.keys(CF.axes).filter(function(k){return CF.axes[k];}).map(Number),out=[];
+  CARDS.forEach(function(c,i){
+    if(ax.length&&ax.indexOf(c[0])<0)return;
+    if(CF.weak&&P.cards[i]==='ok')return;
+    out.push(i);
+  });
+  return out;
+}
+function cardsHTML(){
+  if(CS)return '<section class="panel" id="panel">'+runnerHTML()+'</section>';
+  var ids=selIds(),mast=0;CARDS.forEach(function(c,i){if(P.cards[i]==='ok')mast++;});
+  return '<section class="panel" id="panel"><header class="p-head"><div><p class="eyebrow">بطاقات الأسئلة · '+CARDS.length+' بطاقة</p><h2>اختبر نفسك</h2></div></header>'+
+    taskHTML('اقرأ السؤال، وأجب كتابةً، ثم اكشف الإجابة وقيّم نفسك بصدق.')+
+    '<p class="hint">اختر محاور محددة، أو اتركها فارغة لاختبار الكل.</p>'+
+    '<div class="fchips">'+AXES.map(function(a){return '<button class="chip" data-act="fax" data-id="'+a.id+'" aria-pressed="'+(!!CF.axes[a.id])+'">'+arNum(a.id)+' · '+esc(a.t.length>22?a.t.slice(0,21)+'…':a.t)+'</button>';}).join('')+'</div>'+
+    '<label class="check"><input type="checkbox" data-act="fweak"'+(CF.weak?' checked':'')+'> البطاقات التي لم أتقنها بعد فقط</label>'+
+    '<p class="hint">أتقنتَ حتى الآن '+mast+' من '+CARDS.length+' بطاقة (آخر تقييم «صحيحة»).</p>'+
+    '<div class="actions"><span class="hint">البطاقات المحددة: <b>'+ids.length+'</b></span><button class="btn primary" data-act="startcards"'+(ids.length?'':' disabled')+'>ابدأ الاختبار</button></div></section>';
+}
+function startSession(ids){
+  var q=shuffle(ids);
+  CS={queue:q,i:0,revealed:false,ans:'',results:{},requeued:{},done:false};
+  view='cards';render();toTop();
+}
+function runnerHTML(){
+  if(!CS.queue.length)return '<div class="empty">لا توجد بطاقات في هذه الجولة.</div><div class="actions"><button class="btn" data-act="cexit">رجوع</button><span></span></div>';
+  if(CS.done){
+    var cnt={ok:0,part:0,bad:0},miss=[];
+    Object.keys(CS.results).forEach(function(k){var v=CS.results[k];cnt[v]++;if(v!=='ok')miss.push(+k);});
+    return '<h3>انتهت الجولة</h3><div class="sum"><span class="ok">صحيحة: '+cnt.ok+'</span><span class="part">جزئية: '+cnt.part+'</span><span class="bad">خاطئة: '+cnt.bad+'</span></div>'+
+      (miss.length?'<p>ما يحتاج عودة:</p><ul class="miss">'+miss.map(function(i){return '<li>'+esc(CARDS[i][1])+'</li>';}).join('')+'</ul>':'<p>أجبتَ عن كل بطاقات الجولة إجابة صحيحة.</p>')+
+      '<div class="actions"><button class="btn" data-act="cexit">رجوع إلى الإعدادات</button>'+(miss.length?'<button class="btn primary" data-act="retry">أعد البطاقات التي أخطأت فيها</button>':'<span></span>')+'</div>';
+  }
+  var id=CS.queue[CS.i],c=CARDS[id],n=CS.i+1,tot=CS.queue.length;
+  return '<div class="prog"><span>بطاقة '+n+' من '+tot+'</span><span class="badge">المحور '+arNum(c[0])+'</span></div>'+
+    '<div class="prog-bar"><i style="width:'+(CS.i/tot*100)+'%"></i></div>'+
+
+    '<p class="rq">'+esc(c[1])+'</p>'+
+    (!CS.revealed?
+      '<label for="ans">إجابتك (اكتبها قبل الكشف)</label><textarea id="ans" class="inp" rows="4" data-bind="ans">'+esc(CS.ans)+'</textarea>'+
+
+      '<div class="actions" style="justify-content:flex-start"><button class="btn primary" data-act="reveal">اكشف الإجابة</button><button class="btn ghost" data-act="cexit">إنهاء الجولة</button></div>'
+     :
+      (CS.ans.trim()?'<div class="mine"><b>إجابتك:</b> '+esc(CS.ans)+'</div>':'')+
+      '<div class="ans-box"><b>الإجابة:</b> '+esc(c[2])+'</div><p class="hint" style="margin-bottom:8px">كيف كانت إجابتك؟</p>'+
+      '<div class="rate"><button class="ok" data-act="rate" data-v="ok">صحيحة</button><button class="part" data-act="rate" data-v="part">جزئية</button><button class="bad" data-act="rate" data-v="bad">خاطئة</button></div>');
+}
+function rate(v){
+  var id=CS.queue[CS.i];
+  if(CS.requeued[id]!==2){
+    CS.results[id]=v;P.cards[id]=v;
+    if(v==='bad'){CS.queue.push(id);CS.requeued[id]=2;}
+  }
+  CS.i++;CS.revealed=false;CS.ans='';
+  if(CS.i>=CS.queue.length)CS.done=true;
+  save();render();
+}
+
+/* ================= التمارين ================= */
+function exHTML(){
+  if(EXS)return '<section class="panel" id="panel">'+exRunHTML()+'</section>';
+  return taskHTML('طابق العناصر أو رتّبها من الذاكرة، ثم تحقق. يمكنك إعادة أي تمرين بترتيب مختلف.')+
+    '<div class="exgrid">'+EX.map(function(e){
+      var b=P.ex[e.id],tot=e.kind==='match'?e.pairs.length:e.items.length;
+      return '<button class="extile" data-act="exopen" data-id="'+e.id+'"><span class="badge">المحور '+arNum(e.ax)+'</span><b>'+esc(e.t)+'</b><span class="hint">'+(e.kind==='match'?'مطابقة':'ترتيب')+' · '+tot+' عناصر</span><span class="hint">'+(b!=null?'أفضل نتيجة: '+b+' من '+tot:'لم تجرّبه بعد')+'</span></button>';
+    }).join('')+'</div>';
+}
+function exStart(id){
+  var e=EX.filter(function(x){return x.id===id;})[0],n=e.kind==='match'?e.pairs.length:e.items.length;
+  EXS={e:e,n:n,checked:false,show:false};
+  if(e.kind==='match'){EXS.opts=shuffle(e.pairs.map(function(p,i){return i;}));EXS.sel=e.pairs.map(function(){return '';});}
+  else{EXS.pool=shuffle(e.items.map(function(p,i){return i;}));EXS.picked=[];}
+  view='ex';render();toTop();
+}
+function exScore(){
+  var s=0,e=EXS.e;
+  if(e.kind==='match'){e.pairs.forEach(function(p,i){if(EXS.sel[i]!==''&&EXS.opts[+EXS.sel[i]]===i)s++;});}
+  else{EXS.picked.forEach(function(v,k){if(v===k)s++;});}
+  return s;
+}
+function exRunHTML(){
+  var e=EXS.e,h='<header class="p-head"><div><p class="eyebrow">المحور '+arNum(e.ax)+' · '+(e.kind==='match'?'تمرين مطابقة':'تمرين ترتيب')+'</p><h2>'+esc(e.t)+'</h2></div></header>';
+  var sc=EXS.checked?exScore():0;
+  if(e.kind==='match'){
+    h+=taskHTML('اختر لكل عنصر ما يناسبه من القائمة.')+e.pairs.map(function(p,i){
+      var ok=EXS.checked&&EXS.opts[+EXS.sel[i]]===i&&EXS.sel[i]!=='';
+      var cls=EXS.checked?(ok?' ok':' bad'):'';
+      return '<div class="mrow'+cls+'"><span class="ml">'+esc(p[0])+'</span><select class="inp" data-bind="msel" data-i="'+i+'" aria-label="'+esc(p[0])+'"'+(EXS.checked?' disabled':'')+'><option value="">اختر…</option>'+
+        EXS.opts.map(function(pi,pos){return '<option value="'+pos+'"'+(String(pos)===String(EXS.sel[i])?' selected':'')+'>'+esc(e.pairs[pi][1])+'</option>';}).join('')+'</select>'+
+        (EXS.checked&&!ok&&EXS.show?'<span class="fix">الصحيح: '+esc(p[1])+'</span>':'')+'</div>';
+    }).join('');
+  }else{
+    h+=taskHTML('اضغط العناصر بالترتيب الصحيح من الأول إلى الأخير. اضغط عنصرًا في ترتيبك لإزالته.')+
+      '<div class="ord"><div><h3 style="font-size:16px;margin-bottom:8px">العناصر</h3><ul class="olist">'+
+      EXS.pool.filter(function(v){return EXS.picked.indexOf(v)<0;}).map(function(v){return '<li><button data-act="opick" data-v="'+v+'"'+(EXS.checked?' disabled':'')+'>'+esc(e.items[v])+'</button></li>';}).join('')+
+      '</ul></div><div><h3 style="font-size:16px;margin-bottom:8px">ترتيبك</h3><ol class="olist mine">'+
+      EXS.picked.map(function(v,k){var cls=EXS.checked?(v===k?' class="ok"':' class="bad"'):'';return '<li'+cls+'><button data-act="ounpick" data-k="'+k+'"'+(EXS.checked?' disabled':'')+'>'+arNum(k+1)+'. '+esc(e.items[v])+'</button></li>';}).join('')+
+      '</ol>'+(EXS.checked&&EXS.show?'<p class="hint" style="margin-top:10px"><b>الترتيب الصحيح:</b></p><ol class="miss">'+e.items.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ol>':'')+'</div></div>';
+  }
+  h+=(EXS.checked?'<div class="calib-res '+(sc===EXS.n?'ok':'warn')+'" style="margin-top:14px">نتيجتك: '+sc+' من '+EXS.n+(sc===EXS.n?'. ممتاز.':'. راجع ما أخطأت فيه ثم أعد المحاولة.')+'</div>':'')+
+    '<div class="actions"><button class="btn" data-act="exexit">رجوع إلى التمارين</button><span style="display:flex;gap:8px;flex-wrap:wrap">'+
+    (EXS.checked?'<button class="btn" data-act="exshow">'+(EXS.show?'أخفِ الحل':'اعرض الحل')+'</button><button class="btn primary" data-act="exagain">أعد المحاولة</button>':
+      '<button class="btn primary" data-act="excheck">تحقق</button>')+'</span></div>';
+  return h;
+}
+function exCheck(){
+  var e=EXS.e;
+  if(e.kind==='order'&&EXS.picked.length<EXS.n){note='رتّب كل العناصر أولًا.';render();return;}
+  if(e.kind==='match'&&EXS.sel.some(function(s){return s==='';})){note='اختر إجابة لكل عنصر أولًا.';render();return;}
+  note='';EXS.checked=true;
+  var s=exScore();if(P.ex[e.id]==null||s>P.ex[e.id])P.ex[e.id]=s;
+  save();render();
+}
+
+/* ================= النتيجة والتغذية الراجعة ================= */
+var copyMsg='';
+function levelOf(g){return g>=90?'ممتاز':g>=75?'جيد جدًا':g>=60?'جيد':g>=50?'مقبول':'يحتاج إلى مراجعة';}
+function stats(){
+  var ax=AXES.map(function(a){
+    var r=P.recall[a.id],tot=0,ok=0,part=0,bad=0;
+    CARDS.forEach(function(c,i){if(c[0]!==a.id)return;tot++;var v=P.cards[i];if(v==='ok')ok++;else if(v==='part')part++;else if(v==='bad')bad++;});
+    var exT=0,exS=0;EX.forEach(function(e){if(e.ax!==a.id)return;var n=e.kind==='match'?e.pairs.length:e.items.length;exT+=n;exS+=(P.ex[e.id]||0);});
+    var rp=r?r.pct:0,cp=tot?Math.round((ok+0.5*part)/tot*100):0,ep=exT?Math.round(exS/exT*100):0;
+    return {a:a,r:r,rp:rp,tot:tot,ok:ok,part:part,bad:bad,cp:cp,exT:exT,exS:exS,ep:ep,mix:Math.round(0.4*rp+0.4*cp+0.2*ep)};
+  });
+  var R=Math.round(ax.reduce(function(s,x){return s+x.rp;},0)/ax.length);
+  var ct=0,cs=0;ax.forEach(function(x){ct+=x.tot;cs+=x.ok+0.5*x.part;});
+  var C=ct?Math.round(cs/ct*100):0;
+  var et=0,es=0;ax.forEach(function(x){et+=x.exT;es+=x.exS;});
+  var E=et?Math.round(es/et*100):0;
+  var rated=0;CARDS.forEach(function(c,i){if(P.cards[i])rated++;});
+  var exTried=EX.filter(function(e){return P.ex[e.id]!=null;}).length;
+  var rec=ax.filter(function(x){return x.r;}).length;
+  return {ax:ax,R:R,C:C,E:E,grade:Math.round(0.4*R+0.4*C+0.2*E),rated:rated,total:CARDS.length,exTried:exTried,exTotal:EX.length,rec:rec};
+}
+function buildReport(){
+  var S=stats(),d=new Date(),ds=d.getFullYear()+'/'+pad(d.getMonth()+1)+'/'+pad(d.getDate()),L=[];
+  L.push('تقرير الاسترجاع النشط — المحاضرة السابعة: قياس وتقييم آثار المواد الكيميائية');
+  L.push('مقرر السلامة والصحة المهنية (121 سلا) · التاريخ: '+ds);
+  L.push('');
+  L.push('الدرجة النهائية: '+S.grade+' من 100 ('+levelOf(S.grade)+')');
+  L.push('تفصيل الدرجة: استرجاع المحاور '+S.R+'% (وزنه 40%) · البطاقات '+S.C+'% (وزنها 40%) · التمارين '+S.E+'% (وزنها 20%)');
+  L.push('الإنجاز: استرجعتُ '+S.rec+' من '+AXES.length+' محاور، وقيّمتُ '+S.rated+' من '+S.total+' بطاقة، وجرّبتُ '+S.exTried+' من '+S.exTotal+' تمرينًا.');
+  L.push('ملاحظة: الدرجة تقدير ذاتي محسوب من تقييمي لنفسي داخل الأداة، وليست درجة رسمية.');
+  L.push('');L.push('التغذية الراجعة حسب المحاور:');
+  var strong=[],weak=[];
+  S.ax.forEach(function(x){
+    var a=x.a;
+    L.push('');
+    L.push('المحور '+a.id+': '+a.t+' (نواتج التعلم '+a.lo+')');
+    L.push('- الاسترجاع الحر: '+(x.r?x.r.pct+'% ('+x.r.n+' من '+x.r.total+' نقطة)':'لم أسترجع هذا المحور بعد'));
+    L.push('- البطاقات: '+x.ok+' صحيحة، '+x.part+' جزئية، '+x.bad+' خاطئة، من '+x.tot);
+    L.push('- التمارين: '+x.exS+' من '+x.exT);
+    if(x.r&&x.r.missed&&x.r.missed.length){
+      L.push('- نقاط لم أذكرها (للمراجعة):');
+      x.r.missed.slice(0,4).forEach(function(i){L.push('  • '+trunc(a.kp[i],110));});
+      if(x.r.missed.length>4)L.push('  • وغيرها ('+(x.r.missed.length-4)+' نقاط أخرى)');
+    }
+    (x.mix>=70?strong:weak).push('المحور '+a.id+' ('+a.t+')');
+  });
+  L.push('');
+  L.push('نقاط القوة: '+(strong.length?strong.join('، '):'لم تتضح بعد؛ أحتاج إلى إكمال المزيد من الأنشطة.'));
+  L.push('ما يحتاج مراجعة: '+(weak.length?weak.join('، '):'لا يوجد محور دون 70% حاليًا.'));
+  L.push('الخطوة التالية: أعيد استرجاع المحاور الأضعف دون النظر إلى الدرس، ثم أعيد البطاقات التي قيّمتها جزئية أو خاطئة.');
+  return L.join('\n');
+}
+function trunc(s,n){s=String(s||'');return s.length>n?s.slice(0,n-1)+'…':s;}
+function resultHTML(){
+  var S=stats();
+  return taskHTML('هذه نتيجتك محسوبة من تقييمك لنفسك: استرجاع المحاور 40%، البطاقات 40%، التمارين 20%. انسخ التقرير وأرسله لمن تريد.')+
+    '<section class="panel" id="panel"><div class="grade"><div class="g-num"><b>'+S.grade+'</b><span>من 100</span></div><div class="g-txt"><h2>'+levelOf(S.grade)+'</h2><p class="hint" style="color:var(--on-dark-muted)">استرجعتَ '+S.rec+' من '+AXES.length+' محاور · قيّمتَ '+S.rated+' من '+S.total+' بطاقة · جرّبتَ '+S.exTried+' من '+S.exTotal+' تمرينًا</p></div></div>'+
+    [['استرجاع المحاور (40%)',S.R],['البطاقات (40%)',S.C],['التمارين (20%)',S.E]].map(function(r){return '<div class="cov"><span style="min-width:150px">'+r[0]+'</span><div class="bar"><i style="width:'+r[1]+'%"></i></div><b>'+r[1]+'%</b></div>';}).join('')+
+    '<h3 style="margin:18px 0 8px">التغذية الراجعة</h3>'+
+    '<textarea id="report" class="inp report" readonly rows="16" aria-label="نص التقرير">'+esc(buildReport())+'</textarea>'+
+    '<div class="actions"><button class="btn" data-act="tohome2">رجوع إلى المحاور</button><button class="btn primary" data-act="copyrep">نسخ التغذية الراجعة والدرجة</button></div>'+
+    '<p class="note" id="copymsg" role="status" aria-live="polite">'+esc(copyMsg)+'</p></section>';
+}
+function doCopy(){
+  var txt=buildReport(),ta=byId('report');
+  function fallback(){
+    try{if(ta){ta.value=txt;ta.focus();ta.select();var ok=document.execCommand('copy');copyMsg=ok?'تم النسخ.':'حدّد النص في الأعلى وانسخه يدويًا.';}else copyMsg='تعذّر النسخ.';}
+    catch(e){copyMsg='حدّد النص في الأعلى وانسخه يدويًا.';}
+    var m=byId('copymsg');if(m)m.textContent=copyMsg;
+  }
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(function(){copyMsg='تم النسخ.';var m=byId('copymsg');if(m)m.textContent=copyMsg;},fallback);
+    }else fallback();
+  }catch(e){fallback();}
+}
+
+/* ================= الرسم ================= */
+function render(){
+  var y=window.scrollY||0,body;
+  if(view==='axes')body=axesHTML();
+  else if(view==='recall')body=recallHTML();
+  else if(view==='cards')body=cardsHTML();
+  else if(view==='ex')body=exHTML();
+  else body=resultHTML();
+  app.innerHTML=headerHTML()+navHTML()+(note&&view!=='recall'?noteHTML():'')+body;
+  try{window.scrollTo(0,y);}catch(e){}
+  updateTimerDOM();
+  if(focusId){var el=byId(focusId);if(el)el.focus();focusId=null;}
+}
+function toTop(){var p=byId('panel');if(p&&p.scrollIntoView){try{p.scrollIntoView({block:'start'});}catch(e){}}}
+
+/* ================= الأحداث ================= */
+var handlers={
+  'view':function(el){view=el.dataset.v;note='';copyMsg='';if(view!=='cards')CS=null;if(view!=='ex')EXS=null;render();},
+  'axis':function(el){var id=+el.dataset.id,a=axById(id);if(a.kp)startRecall(id);else{CF.axes={};CF.axes[id]=true;CF.weak=false;startSession(selIds());}},
+  'tohome':function(){view='axes';RC=null;resetTimer();render();},
+  'rack':function(el){RC.ack=el.checked;focusId=el.checked?'rtext':null;render();},
+  'compare':function(){RC.stage=1;resetTimer();render();toTop();},
+  'tick':function(el){RC.ticks[+el.dataset.i]=el.checked;saveRecall();render();},
+  'axcards':function(el){var id=+el.dataset.id;CF.axes={};CF.axes[id]=true;CF.weak=false;startSession(selIds());},
+  't-toggle':function(){timerToggle();},
+  't-reset':function(){resetTimer();updateTimerDOM();},
+  'resetprog':function(){
+    if(!confirmReset){confirmReset=true;render();setTimeout(function(){if(confirmReset){confirmReset=false;render();}},4000);return;}
+    confirmReset=false;P={recall:{},cards:{},ex:{}};save();render();
+  },
+  'fax':function(el){var id=el.dataset.id;CF.axes[id]=!CF.axes[id];render();},
+  'fweak':function(el){CF.weak=el.checked;render();},
+  'startcards':function(){startSession(selIds());},
+
+  'reveal':function(){CS.revealed=true;render();},
+  'rate':function(el){rate(el.dataset.v);},
+  'cexit':function(){CS=null;render();},
+  'retry':function(){var ids=Object.keys(CS.results).filter(function(k){return CS.results[k]!=='ok';}).map(Number);startSession(ids);},
+  'exopen':function(el){exStart(el.dataset.id);},
+  'exexit':function(){EXS=null;note='';render();},
+  'excheck':function(){exCheck();},
+  'exshow':function(){EXS.show=!EXS.show;render();},
+  'exagain':function(){var id=EXS.e.id;note='';exStart(id);},
+  'opick':function(el){EXS.picked.push(+el.dataset.v);render();},
+  'ounpick':function(el){EXS.picked.splice(+el.dataset.k,1);render();},
+  'tohome2':function(){view='axes';render();},
+  'copyrep':function(){doCopy();},
+};
+var forms={};
+
+app.addEventListener('click',function(e){
+  var el=e.target.closest('[data-act]');if(!el||!app.contains(el))return;
+  var h=handlers[el.dataset.act];if(h)h(el,e);
+});
+app.addEventListener('submit',function(e){
+  var f=e.target.closest('[data-form]');if(!f)return;
+  e.preventDefault();var h=forms[f.dataset.form];if(h)h(f);
+});
+function onInput(e){
+  var el=e.target,k=el.dataset.bind;if(!k)return;
+  if(k==='rtext'&&RC){RC.text=el.value;var w=words(RC.text),wc=byId('wc');if(wc)wc.textContent='الكلمات: '+w;var b=byId('cmpbtn');if(b)b.disabled=w<1;}
+  else if(k==='ans'&&CS){CS.ans=el.value;}
+  else if(k==='msel'&&EXS){EXS.sel[+el.dataset.i]=el.value;}
+}
+app.addEventListener('input',onInput);
+app.addEventListener('change',function(e){if(e.target.tagName==='SELECT')onInput(e);});
+
+/*TEST_HOOK*/
+/* ================= البدء ================= */
+app.innerHTML='<div class="empty">جارٍ تحميل تقدّمك…</div>';
+loadAll().catch(function(){}).then(function(){render();});
+})();
+</script>
+
+</body></html>
